@@ -11,6 +11,9 @@
     <div id="start-screen" class="container">
       <img src="./images/logo.png" width="1000" alt="logo">
       <br>
+
+        <button id="start-screen-music">Music</button>
+        <br>
       <input type="text" name="name" value="">
       <button id="start-btn">Start!</button>
     </div>
@@ -18,7 +21,22 @@
     <!-- GAME SCREEN -->
     <div id="game-screen" class="container">
       <!-- Game elements like score, lifes and other ui elements should be here (inside the game-screen but outside the game-box) -->
-
+       <section id="game-screen-header">
+            <div>
+        <ul id="life-container">
+            <li><img src="./images/chicken.png" width="50" height="80" alt="logo"></li>
+            <li><img src="./images/chicken.png" width="50" height="80" alt="logo"></li>
+            <li><img src="./images/chicken.png" width="50" height="80" alt="logo"></li>
+            <li><img src="./images/chicken.png" width="50" height="80" alt="logo"></li>
+            <li><img src="./images/chicken.png" width="50" height="80" alt="logo"></li>
+        </ul>        
+       </div>
+       <div id="game-screen-right-header">
+        <button id="music">Music</button>
+        <p id="score">score: 0</p>
+       </div>
+       </section>
+       
       <div id="game-box">
         <!-- Game elements will be added here via javascript and DOM manipulation -->
       </div>
@@ -29,5 +47,11 @@
     <div id="game-over-screen" class="container">
       <img src="./images/game_over.png" width="500" alt="logo">
     </div>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/chicken.js"></script>
+    <script src="./js/fallingObject.js"></script>
+
 </body>
 </html>
