@@ -5,12 +5,16 @@ const startScreenNode = document.querySelector("#start-screen")
 const gameScreenNode = document.querySelector("#game-screen")
 const gameOverScreenNode = document.querySelector("#game-over-screen")
 
-// buttons
+// life
+const livesContainerNode = document.querySelector("#life-container")
+
+// start button
 const startBtnNode = document.querySelector("#start-btn")
 
 // score
 const scoreLabelNode = document.querySelector("#score")
 
+// audio buttons
 const playButton = document.querySelector("#music");
 const startScreenMusicButton = document.querySelector("#start-screen-music");
 
@@ -56,12 +60,25 @@ function startGame() {
     // console.log(birdObj)
     // obstacleObj = new Obstacle()
 
+    setupLivesContainer()
     // 3. start the game loop
     gameIntervalId = setInterval(gameLoop, Math.round(1000 / 60)) // 60fps
 
     // 4. start all other intervals that might be needed.
     fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, 1500);
 
+}
+
+function setupLivesContainer() {
+    for(let i = 0; i < gameObj.lives; i++) {
+        const lifeImageNode = document.createElement("li")
+        lifeImageNode.innerHTML = `<img src="./images/chicken.png" width="40" height="40" alt="logo">`
+        livesContainerNode.append(lifeImageNode)
+        gameObj.lifeNodes.push(lifeImageNode)
+    }
+    /*gameObj.lives.forEach((life) => {
+        
+    })*/
 }
 
 function gameLoop() {
@@ -110,7 +127,7 @@ function collisionChickenFallingObjects() {
     fallingObjectsArray.forEach((fallingObj, index) => {
         let isCaught = checkChickenCatchingFallingObject(chickenObj, fallingObj)
         if (isCaught) {
-            updateWhenChickIsCaught(index, fallingObj)
+            updateWhenChickenFallingObjectCollides(index, fallingObj)
         }
     })
 
@@ -132,16 +149,19 @@ function checkChickenCatchingFallingObject(chicken, fallingObject) {
 
 }
 
-function updateWhenChickIsCaught(index, fallingObject) {
+function updateWhenChickenFallingObjectCollides(index, fallingObject) {
+    removeFallingObject(index)
     if (fallingObject.isChick()) {
         incrementScore()
-        removeCaughtChick(index)
     } else {
-        gameOver()
+        gameObj.hittedPredetor()
+        if (gameObj.isGameOver()) {
+            gameOver()
+        }
     }
 }
 
-function removeCaughtChick(index) {
+function removeFallingObject(index) {
 
     fallingObjectsArray[index].node.remove()
     fallingObjectsArray.splice(index, 1)

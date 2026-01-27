@@ -50,6 +50,7 @@ body {
 
 #game-screen-header {
   width:1000px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   padding-bottom: 0px;
