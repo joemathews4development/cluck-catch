@@ -32,17 +32,34 @@ class Chicken {
 
 
     move(direction) {
-        if (direction === "up" && this.y > 0) {
-            this.y -= this.moveSpeed
+        if (direction === "up") {
+            console.log(this.y)
+            if (this.y - this.moveSpeed > 0) {
+                this.y -= this.moveSpeed
+            } else {
+                this.y = 0
+            }
             this.node.style.top = `${this.y}px`
-        } else if (direction === "right" && (this.x + this.width) <= 1000) {
-            this.x += this.moveSpeed
+        } else if (direction === "right") {
+            if ((this.x + this.width + this.moveSpeed) >= gameBoxNode.offsetWidth) {
+                this.x = gameBoxNode.offsetWidth - this.width
+            } else {
+                this.x += this.moveSpeed
+            }            
             this.node.style.left = `${this.x}px`
-        } else if (direction === "down" && (this.y + this.height) <= 800) {
-            this.y += this.moveSpeed
+        } else if (direction === "down") {
+            if ((this.y + this.height + this.moveSpeed) >= gameBoxNode.offsetHeight) {
+                this.y = gameBoxNode.offsetHeight - this.height
+            } else {
+                this.y += this.moveSpeed
+            }
             this.node.style.top = `${this.y}px`
-        } else if (direction === "left" && this.x > 0) {
-            this.x -= this.moveSpeed
+        } else if (direction === "left") {
+            if (this.x - this.moveSpeed > 0) {
+                this.x -= this.moveSpeed
+            } else {
+                this.x = 0
+            }
             this.node.style.left = `${this.x}px`
         }
     }
