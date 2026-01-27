@@ -185,6 +185,7 @@ function gameOver() {
     clearInterval(fallingObjectsSpawnIntervalId)
     appObj.changeState(GameState.over)
     finalScoreLabelNode.innerText = getFinalScoreMessage(appObj.name, chickenObj.score)
+    console.log(appObj.name, chickenObj.score)
     addPlayerScore(appObj.name, chickenObj.score)
 
 }

@@ -9,7 +9,13 @@ class App {
     }
 
     #setupHighScores() {
+        highScoresNode.innerHTML = ""
+        const highScoreHeader = document.createElement("p")
+        highScoreHeader.classList.add("text-content")
+        highScoreHeader.innerText = "High Scores"
+        highScoresNode.append(highScoreHeader)
         const highScores = getScores()
+        console.log(highScores.length)
         if (highScores.length === 0) {
             const noHighScoreNode = document.createElement("p")
             noHighScoreNode.classList.add("text-content")

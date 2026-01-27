@@ -33,7 +33,6 @@ class Chicken {
 
     move(direction) {
         if (direction === "up") {
-            console.log(this.y)
             if (this.y - this.moveSpeed > 0) {
                 this.y -= this.moveSpeed
             } else {
