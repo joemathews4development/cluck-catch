@@ -5,14 +5,22 @@ const startScreenNode = document.querySelector("#start-screen")
 const gameScreenNode = document.querySelector("#game-screen")
 const gameOverScreenNode = document.querySelector("#game-over-screen")
 
+const highScoresNode = document.querySelector("#high-scores")
+
 // life
 const livesContainerNode = document.querySelector("#life-container")
 
-// start button
+// buttons
 const startBtnNode = document.querySelector("#start-btn")
+const restartBtnNode = document.querySelector("#restart")
+const startNewBtnNode = document.querySelector("#start-new")
+
+// name
+const nameNode = document.querySelector("#name")
 
 // score
 const scoreLabelNode = document.querySelector("#score")
+const finalScoreLabelNode = document.querySelector("#final-score")
 
 // audio buttons
 const playButton = document.querySelector("#music");
@@ -22,12 +30,17 @@ const startScreenMusicButton = document.querySelector("#start-screen-music");
 const gameBoxNode = document.querySelector("#game-box")
 
 //* GLOBAL GAME VARIABLES
-let gameObj = null
+const GameState = {
+  start: "start",
+  game: "game",
+  over: "game_over"
+}
+let appObj = null
 let chickenObj = null
 let fallingObjectsArray = []
 let gameIntervalId = null
 let fallingObjectsSpawnIntervalId = null
-const fallingObjectsImagesArray = ["raccoon", "fox", "puppy", "chick", "kitten"]
+const fallingObjectsImagesArray = ["raccoon", "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "chick"]
 
 const fullBgm = new Audio("audio/fullbgm.wav")
 fullBgm.loop = true
@@ -35,79 +48,78 @@ fullBgm.loop = true
 const introBgm = new Audio("audio/introbgm.wav")
 introBgm.loop = true
 
-let playMusic = false
+const gameOverBgm = new Audio("audio/gameOver.wav")
 
-if(playMusic) {
-    introBgm.play()
-}
 
 
 //* GLOBAL GAME FUNCTIONS
+
+function startNew() {
+    appObj = new App()
+}
+
+function validateAndStartGame() {
+    const name = nameNode.value.trim()
+    if (!name) {
+        bounceInput()
+        return
+    }
+    appObj.updateName(name)
+    startGame()
+}
+
+function bounceInput() {
+  nameNode.classList.remove('input-bounce'); // reset animation
+  void nameNode.offsetWidth; // force reflow
+  nameNode.classList.add('input-bounce');
+  nameNode.focus();
+
+  // Optional mobile vibration (very short)
+  if (navigator.vibrate) {
+    navigator.vibrate(60);
+  }
+}
+
 function startGame() {
 
-    // 1. hide start screen & show the game screen
-    startScreenNode.style.display = "none"
-    gameScreenNode.style.display = "flex"
-    introBgm.pause();
-    fullBgm.currentTime = 0;
-    if (playMusic) {
-        fullBgm.play()
-    }
-
-    // 2. add the initial game elements
-    gameObj = new Game("Hi")
     chickenObj = new Chicken()
-    // console.log(birdObj)
-    // obstacleObj = new Obstacle()
-
+    appObj.changeState(GameState.game)
     setupLivesContainer()
-    // 3. start the game loop
+
+    // start the game loop
     gameIntervalId = setInterval(gameLoop, Math.round(1000 / 60)) // 60fps
 
-    // 4. start all other intervals that might be needed.
+    // start all other intervals that might be needed.
     fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, 1500);
 
 }
 
 function setupLivesContainer() {
-    for(let i = 0; i < gameObj.lives; i++) {
+    for(let i = 0; i < chickenObj.lives; i++) {
         const lifeImageNode = document.createElement("li")
         lifeImageNode.innerHTML = `<img src="./images/chicken.png" width="40" height="40" alt="logo">`
         livesContainerNode.append(lifeImageNode)
-        gameObj.lifeNodes.push(lifeImageNode)
+        chickenObj.lifeNodes.push(lifeImageNode)
     }
-    /*gameObj.lives.forEach((life) => {
-        
-    })*/
 }
 
 function gameLoop() {
 
-    // // console.log("Game running at 60 fps")
-    // // all automated movements and collision checks should happen here
-    // birdObj.gravity()
-    // // obstacleObj.automaticMovement()
     fallingObjectsArray.forEach((fallingObj) => {
         fallingObj.automaticFalling()
     })
     fallingObjectsDespawnCheck()
     collisionChickenFallingObjects()
-    // collisionBirdObstacles()
-    // collisionBirdFloor()
 
 }
 
 function fallingObjectsSpawn() {
 
-    const randomfallingObjectLeftTopPositionX = Math.min(Math.floor(Math.random() * 1000), gameBoxNode.offsetWidth - 100)
-    // let distanceBetweenObstacles = 310
+    const randomfallingObjectLeftTopPositionX = Math.min(Math.floor(Math.random() * gameBoxNode.offsetWidth), gameBoxNode.offsetWidth - 100)
     const fallingObjectImage = fallingObjectsImagesArray[Math.floor(Math.random() * fallingObjectsImagesArray.length)]
-    const gravity = gameObj.score > 10 ? gameObj.score > 20 ? gameObj.score > 30 ? 5.5 : 4.8 : 3.2 : 1.8
+    const gravity = appObj.score > 10 ? appObj.score > 20 ? appObj.score > 30 ? 5.5 : 4.8 : 3.2 : 1.8
     let fallingObj = new FallingObject(randomfallingObjectLeftTopPositionX, fallingObjectImage, gravity)
     fallingObjectsArray.push(fallingObj)
-
-    /*let obstacleBottom = new Obstacle(randomObstacleTopPositionY + distanceBetweenObstacles, "bottom")
-    obstacleArr.push(obstacleBottom)    */
 
 }
 
@@ -116,7 +128,7 @@ function fallingObjectsDespawnCheck() {
     if  (fallingObjectsArray.length === 0) {
         return
     }
-    if ((fallingObjectsArray[0].y + fallingObjectsArray[0].height) >= 800) {
+    if ((fallingObjectsArray[0].y + fallingObjectsArray[0].height) >= gameBoxNode.offsetHeight) {
         fallingObjectsArray[0].node.remove()
         fallingObjectsArray.shift()
     }
@@ -139,13 +151,7 @@ function checkChickenCatchingFallingObject(chicken, fallingObject) {
         fallingObject.x + fallingObject.width > chicken.x &&
         fallingObject.y < chicken.y + chicken.height &&
         fallingObject.y + fallingObject.height > chicken.y
-    );
-    /*return (
-      (fallingObject.x + fallingObject.imagePaddingX) < (chicken.x + chicken.width - chicken.imagePaddingX) &&
-      (fallingObject.x + fallingObject.width - fallingObject.imagePaddingX) > (chicken.x + chicken.imagePaddingX) &&
-      (fallingObject.y + fallingObject.imagePaddingY) < (chicken.y + chicken.height - chicken.imagePaddingY) &&
-      (fallingObject.y + fallingObject.height - fallingObject.imagePaddingY) > (chicken.y + chicken.imagePaddingY)
-    );*/
+    )
 
 }
 
@@ -154,8 +160,8 @@ function updateWhenChickenFallingObjectCollides(index, fallingObject) {
     if (fallingObject.isChick()) {
         incrementScore()
     } else {
-        gameObj.hittedPredetor()
-        if (gameObj.isGameOver()) {
+        chickenObj.hittedPredetor()
+        if (chickenObj.isGameOver()) {
             gameOver()
         }
     }
@@ -169,23 +175,35 @@ function removeFallingObject(index) {
 }
 
 function incrementScore() {
-    gameObj.incrementScore()
+    chickenObj.incrementScore()
 }
 
 function gameOver() {
 
-    fullBgm.pause();
-    fullBgm.currentTime = 0;
+    destroyCharacterNodes()
     clearInterval(gameIntervalId)
     clearInterval(fallingObjectsSpawnIntervalId)
-
-    gameScreenNode.style.display = "none"
-    gameOverScreenNode.style.display = "flex"
+    appObj.changeState(GameState.over)
+    finalScoreLabelNode.innerText = getFinalScoreMessage(appObj.name, chickenObj.score)
+    addPlayerScore(appObj.name, chickenObj.score)
 
 }
 
+function destroyCharacterNodes() {
+    chickenObj.destroyNode()
+    fallingObjectsArray.forEach((fallingObject) => {
+        fallingObject.destroyNode()
+    })
+    fallingObjectsArray = []
+}
+
 //* EVENT LISTENERS
-startBtnNode.addEventListener("click", startGame)
+startBtnNode.addEventListener("click", validateAndStartGame)
+restartBtnNode.addEventListener("click", startGame)
+startNewBtnNode.addEventListener("click", startNew)
+document.addEventListener("DOMContentLoaded", () => {
+  appObj = new App();
+});
 document.addEventListener("keydown", (event) => {
     if (event.code === "ArrowUp") {
         chickenObj.move("up")
@@ -199,21 +217,9 @@ document.addEventListener("keydown", (event) => {
 })
 
 playButton.addEventListener('click', () => {
- if (playMusic) {
-    fullBgm.play();
-  } else {
-    fullBgm.pause();
-    fullBgm.currentTime = 0;
-  }
-  playMusic = !playMusic
+    appObj.toggleSound()
 })
 
 startScreenMusicButton.addEventListener('click', () => {
- if (playMusic) {
-    introBgm.play();
-  } else {
-    introBgm.pause();
-    introBgm.currentTime = 0;
-  }
-  playMusic = !playMusic
+    appObj.toggleSound()
 })

@@ -35,4 +35,8 @@ class FallingObject {
         return this.imageName === "chick"
     }
 
+    destroyNode() {
+        this.node.remove()
+    }
+
 }

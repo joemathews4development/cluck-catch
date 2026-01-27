@@ -1,21 +1,65 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+html, body {
   margin: 0;
   background-color: lightgray;
+  height: 100%;
 }
 
-#start-screen {
+.top-level-containers {
   background-color: cyan;
   background-image: url("../images/background.jpg");
   background-size: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+#start-screen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.start-screen-side-content {
+  flex: 1;
+  text-align: center;
+}
+
+#start-center-screen {
+  flex: 0 0 auto;
+  margin: 0 auto;
+}
+
+#high-scores {
+  list-style-type: none;
+}
+
+.gradient-background {
+  background-image: linear-gradient(to bottom, red, yellow);
+}
+
+.text-content {
+  font-family: 'Chewy', cursive;
+  font-size: 22px;
+  color: #5A3A1A;
+  letter-spacing: 1px;
+}
+
+#name {
+  background-image: linear-gradient(to bottom, red, yellow);
+  padding: 20px;
+  border-radius: 10px;
+  border-color: red;
+  font-family: 'Chewy', cursive;
+  font-size: 22px;
+  color: #5A3A1A;
+  letter-spacing: 1px;
 }
 
 #start-btn {
-  background-color: green;
-  color: white;
-  padding: 20px;
-  font-size: 20px;
   margin-top: 40px;
+  padding: 20px 40px;
   border-radius: 10px; 
+  border-color: red;
 }
 
 .container {
@@ -23,7 +67,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 50px;
 }
 
 #game-box {
@@ -59,8 +102,14 @@ body {
 
 #game-screen-right-header {
   display: flex;
-  justify-content: space-evenly;
-  padding: 20px;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+  gap: 20px;
+  padding-right: 20px;
+  margin: 0;
+}
+#score {
   margin: 0;
 }
 
@@ -70,4 +119,35 @@ body {
   justify-content: flex-start; 
   padding: 0;
   margin: 0;
+}
+
+#restart {
+  margin-top: 40px;
+  padding: 20px 40px;
+  border-radius: 10px; 
+  border-color: red;
+}
+
+#start-new {
+  margin-top: 40px;
+  padding: 20px 40px;
+  border-radius: 10px; 
+  border-color: red;
+}
+
+/**
+Bounce effect for validation
+*/
+@keyframes cuteBounce {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.08); }
+  55%  { transform: scale(0.96); }
+  75%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+.input-bounce {
+  animation: cuteBounce 0.45s ease;
+  border: 2px solid #ffb703;
+  box-shadow: 0 0 10px rgba(255, 183, 3, 0.6);
 }

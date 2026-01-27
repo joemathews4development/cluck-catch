@@ -1,10 +1,13 @@
 class Chicken {
 
+    /**
+     * ! Always create new after calling the destroy method on the existing object.
+     */
     constructor() {
 
         this.node = document.createElement("img")
         this.node.src = "./images/chicken.png"
-
+        
         gameBoxNode.append(this.node)
 
         this.x = 250
@@ -21,6 +24,10 @@ class Chicken {
         this.node.style.height = `${this.height}px`
 
         this.moveSpeed = 30
+        this.score = 0
+        this.lives = 5
+        this.lifeNodes = []
+        this.#updateScore()
     }
 
 
@@ -38,6 +45,32 @@ class Chicken {
             this.x -= this.moveSpeed
             this.node.style.left = `${this.x}px`
         }
+    }
+
+    incrementScore() {
+        this.score += 1
+        this.#updateScore()
+    }
+
+    #updateScore() {
+        scoreLabelNode.innerText = `Score: ${this.score}`
+    }
+
+    hittedPredetor() {
+        console.log(this.lives)
+        if (this.lives > 0) {
+            this.lives -= 1
+            this.lifeNodes.pop().remove()
+        }
+    }
+
+    isGameOver() {
+        console.log(this.lives)
+        return this.lives === 0
+    }
+
+    destroyNode() {
+        this.node.remove()
     }
     
 }

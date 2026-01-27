@@ -1,57 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cluck & Catch</title>
-    <link rel="stylesheet" href="./styles/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
     <!-- START SCREEN -->
-    <div id="start-screen" class="container">
-      <img src="./images/logo.png" width="1000" alt="logo">
-      <br>
+    <div id="start-screen" class="container top-level-containers">
+      <div id="start-screen-instructions" class="start-screen-side-content">
+        <p class="text-content">
+          🎯 Objective <br />
+          • Chicks will fall from the sky. <br />
+          • Catch them safely to score points. <br />
+          • Letting a chick hit the ground means it’s lost! <br />
+          <br />
+          ⚠️ Beware of Predators <br />
+          • Predator cubs (like foxes, raccoons, dogs, etc.) will also fall.
+          <br />
+          • Catching a predator costs you 1 life. <br />
+          • You start the game with 5 lives. <br />
+          • Lose all lives → Game Over. <br />
+          <br />
+          🎮 Controls <br />
 
-        <button id="start-screen-music">Music</button>
-        <br>
-      <input type="text" name="name" value="">
-      <button id="start-btn">Start!</button>
+          Move the mother hen using the arrow keys: <br />
+          • ⬆️ Up Arrow – Move up <br />
+          • ➡️ Right Arrow – Move right <br />
+          • ⬇️ Down Arrow – Move down <br />
+          • ⬅️ Left Arrow – Move left <br />
+
+          You can move in all directions to protect your chicks! <br />
+          <br />
+          🏆 Be the Hero Hen <br />
+
+          React fast, dodge predators, and save as many chicks as possible. Only
+          the best Mother Hens can protect the whole flock! <br />
+
+          🐔💛 Good luck, Hero Hen!
+        </p>
+      </div>
+      <div id="start-center-screen" class="container">
+        <img src="./images/logo.png" alt="logo" />
+        <br />
+        <img
+          src="./images/sound_on.png"
+          id="start-screen-music"
+          width="90"
+          height="60"
+          alt="logo"
+        />
+
+        <br />
+        <input
+          id="name"
+          class="text-content"
+          type="text"
+          name="name"
+          value=""
+          placeholder="Enter your Name"
+        />
+        <button id="start-btn" class="gradient-background text-content">
+          Lets Go!
+        </button>
+      </div>
+      <div class="start-screen-side-content">
+        <ol id="high-scores" class="text-content">High Scores</ol>
+      </div>
     </div>
-    
+
     <!-- GAME SCREEN -->
     <div id="game-screen" class="container">
       <!-- Game elements like score, lifes and other ui elements should be here (inside the game-screen but outside the game-box) -->
-       <section id="game-screen-header">
-            <div>
-        <ul id="life-container">
-            <!-- <li><img src="./images/chicken.png" width="40" height="40" alt="logo"></li>
-            <li><img src="./images/chicken.png" width="40" height="40" alt="logo"></li>
-            <li><img src="./images/chicken.png" width="40" height="40" alt="logo"></li>
-            <li><img src="./images/chicken.png" width="40" height="40" alt="logo"></li>
-            <li><img src="./images/chicken.png" width="40" height="40" alt="logo"></li> -->
-        </ul>        
-       </div>
-       <div id="game-screen-right-header">
-        <button id="music">Music</button>
-        <p id="score">score: 0</p>
-       </div>
-       </section>
-       
+      <section id="game-screen-header">
+        <div>
+          <ul id="life-container"></ul>
+        </div>
+        <div id="game-screen-right-header">
+          <img src="./images/sound_on.png" id="music" alt="logo" />
+          <p id="score" class="text-content">score: 0</p>
+        </div>
+      </section>
+
       <div id="game-box">
         <!-- Game elements will be added here via javascript and DOM manipulation -->
       </div>
-      
     </div>
-    
+
     <!-- GAME OVER SCREEN -->
-    <div id="game-over-screen" class="container">
-      <img src="./images/game_over.png" width="500" alt="logo">
+    <div id="game-over-screen" class="container top-level-containers">
+      <img src="./images/game_over.png" alt="logo" />
+      <p id="final-score" class="text-content">score: 0</p>
+      <button id="restart" class="gradient-background text-content">
+        Restart
+      </button>
+      <button id="start-new" class="gradient-background text-content">
+        Start New
+      </button>
     </div>
 
     <script src="./js/main.js"></script>
-    <script src="./js/game.js"></script>
+    <script src="./js/app.js"></script>
     <script src="./js/chicken.js"></script>
     <script src="./js/fallingObject.js"></script>
-
-</body>
+    <script src="./js/localStorage.js"></script>
+  </body>
 </html>
