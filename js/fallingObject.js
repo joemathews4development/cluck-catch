@@ -24,6 +24,7 @@ class FallingObject {
         this.node.style.width = `${this.width}px`
         this.node.style.height = `${this.height}px`
 
+        this.checkAndActivateBoost()
     }
 
     automaticFalling() {
@@ -31,8 +32,19 @@ class FallingObject {
         this.node.style.top = `${this.y}px`
     }
 
+    checkAndActivateBoost() {
+        if (this.isBooster()) {
+            this.node.classList.add("shine")
+            this.gravity *= 2
+        }
+    }
+
     isChick() {
         return this.imageName === "chick"
+    }
+
+    isBooster() {
+        return this.imageName === "booster"
     }
 
     destroyNode() {

@@ -40,7 +40,10 @@ let chickenObj = null
 let fallingObjectsArray = []
 let gameIntervalId = null
 let fallingObjectsSpawnIntervalId = null
-const fallingObjectsImagesArray = ["raccoon", "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "chick"]
+const fallingObjectsImagesArray = [
+    "raccoon", "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "chick", "raccoon",
+     "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "booster"
+]
 
 const fullBgm = new Audio("audio/fullbgm.wav")
 fullBgm.loop = true
@@ -159,6 +162,8 @@ function updateWhenChickenFallingObjectCollides(index, fallingObject) {
     removeFallingObject(index)
     if (fallingObject.isChick()) {
         incrementScore()
+    } else if (fallingObject.isBooster()) {
+        chickenObj.boost()
     } else {
         chickenObj.hittedPredetor()
         if (chickenObj.isGameOver()) {
@@ -185,8 +190,9 @@ function gameOver() {
     clearInterval(fallingObjectsSpawnIntervalId)
     appObj.changeState(GameState.over)
     finalScoreLabelNode.innerText = getFinalScoreMessage(appObj.name, chickenObj.score)
-    console.log(appObj.name, chickenObj.score)
-    addPlayerScore(appObj.name, chickenObj.score)
+    if (chickenObj.score > 0) {
+        addPlayerScore(appObj.name, chickenObj.score)
+    }
 
 }
 

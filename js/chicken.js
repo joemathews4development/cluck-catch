@@ -27,6 +27,7 @@ class Chicken {
         this.score = 0
         this.lives = 5
         this.lifeNodes = []
+        this.boostPowerActivated = false
         this.#updateScore()
     }
 
@@ -63,6 +64,17 @@ class Chicken {
         }
     }
 
+    boost() {
+        this.boostPowerActivated = true
+        this.node.classList.add("shine")
+        this.moveSpeed *= 4
+        setTimeout(() => {
+            this.boostPowerActivated = false
+            this.node.classList.remove("shine")
+            this.moveSpeed /= 4
+        }, 8000);
+    }
+
     incrementScore() {
         this.score += 1
         this.#updateScore()
@@ -73,8 +85,7 @@ class Chicken {
     }
 
     hittedPredetor() {
-        console.log(this.lives)
-        if (this.lives > 0) {
+        if (this.lives > 0 && !this.boostPowerActivated) {
             this.lives -= 1
             this.lifeNodes.pop().remove()
         }
