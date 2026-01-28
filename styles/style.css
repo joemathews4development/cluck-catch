@@ -13,6 +13,21 @@ html, body {
   width: 100vw;
 }
 
+#game-screen {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Background layer */
+#game-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../images/background.jpg") center / cover no-repeat;
+  opacity: 0.25;          /* 👈 only background opacity */
+  z-index: 0;
+}
+
 #start-screen {
   display: flex;
   flex-direction: row;
@@ -71,7 +86,7 @@ html, body {
 
 #game-box {
   background-color: darkgray;
-  width:1000px;
+  width:1200px;
   height:800px;
 
   position: relative; /* allows us to position inner elements (absolute) related the the game-box */
@@ -92,7 +107,7 @@ html, body {
 }
 
 #game-screen-header {
-  width:1000px;
+  width:1200px;
   height: 40px;
   display: flex;
   justify-content: space-between;
