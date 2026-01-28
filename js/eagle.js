@@ -11,6 +11,7 @@ class Eagle {
         this.y = posY
         this.width = 130
         this.height = 130
+        this.visible = false
 
         this.node.style.position = "absolute"
         this.node.style.top = `${this.y}px`
@@ -26,24 +27,40 @@ class Eagle {
         if (this.x + this.width < 10) {
             this.x += this.movementSpeed
             this.node.style.left = `${this.x}px`
+            this.visible = true
         }
         if (this.x > gameBoxNode.offsetWidth) {
-            this.x = Eagle.startingX
-            this.node.style.left = `${this.x}px`
+            this.resetEaglePosition()
         } else {
             const chick = fallingObjectsArray.find( (fallingObject) => fallingObject.isChick() )
+
             let newX = chick?.x || gameBoxNode.offsetWidth
             let newY = chick?.y || 0
             let newGravity = chick?.gravity || 1.8
+
             const distanceX = newX - this.x
             const timeToReach = distanceX / this.movementSpeed
             const targetY = newY + newGravity * timeToReach
 
-            this.x += this.movementSpeed;
-            this.y += (targetY - this.y) * 0.03;
+            this.x += this.movementSpeed
+            this.y += (targetY - this.y) * 0.03
+
             this.node.style.top = `${this.y}px`
             this.node.style.left = `${this.x}px`
         }
+    }
+
+    resetEaglePosition() {
+        this.x = Eagle.startingX
+        const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
+        this.y = eaglePositionY
+        this.node.style.left = `${this.x}px`
+        this.node.style.left = `${this.x}px`
+        this.visible = false
+    }
+
+    destroyNode() {
+        this.node.remove()
     }
     
 }

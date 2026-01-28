@@ -11,7 +11,7 @@ class Chicken {
         gameBoxNode.append(this.node)
 
         this.x = 250
-        this.y = 0
+        this.y = 600
         this.width = 130
         this.height = 130
 
@@ -29,57 +29,24 @@ class Chicken {
         this.#updateScore()
     }
 
-
-    /*move(direction) {
-        if (direction === "up") {
-            if (this.y - this.moveSpeed > 0) {
-                this.y -= this.moveSpeed
-            } else {
-                this.y = 0
-            }
-            this.node.style.top = `${this.y}px`
-        } else if (direction === "right") {
-            if ((this.x + this.width + this.moveSpeed) >= gameBoxNode.offsetWidth) {
-                this.x = gameBoxNode.offsetWidth - this.width
-            } else {
-                this.x += this.moveSpeed
-            }            
-            this.node.style.left = `${this.x}px`
-        } else if (direction === "down") {
-            if ((this.y + this.height + this.moveSpeed) >= gameBoxNode.offsetHeight) {
-                this.y = gameBoxNode.offsetHeight - this.height
-            } else {
-                this.y += this.moveSpeed
-            }
-            this.node.style.top = `${this.y}px`
-        } else if (direction === "left") {
-            if (this.x - this.moveSpeed > 0) {
-                this.x -= this.moveSpeed
-            } else {
-                this.x = 0
-            }
-            this.node.style.left = `${this.x}px`
-        }
-    }*/
-
     move() {
-        let dx = 0;
-        let dy = 0;
+        let dx = 0
+        let dy = 0
 
-        if (keys.ArrowUp) dy -= 1;
-        if (keys.ArrowDown) dy += 1;
-        if (keys.ArrowLeft) dx -= 1;
-        if (keys.ArrowRight) dx += 1;
+        if (keys.ArrowUp) dy -= 1
+        if (keys.ArrowDown) dy += 1
+        if (keys.ArrowLeft) dx -= 1
+        if (keys.ArrowRight) dx += 1
 
         // No movement
-        if (dx === 0 && dy === 0) return;
+        if (dx === 0 && dy === 0) {
+            return
+        }
 
         // Normalize diagonal movement
-        const length = Math.sqrt(dx * dx + dy * dy);
-        dx /= length;
-        dy /= length;
-
-        //const speed = 30;
+        const length = Math.sqrt(dx * dx + dy * dy)
+        dx /= length
+        dy /= length
         
         const newX = this.x + dx * this.moveSpeed
         const newY = this.y + dy * this.moveSpeed
@@ -130,6 +97,7 @@ class Chicken {
     }
 
     destroyNode() {
+        console.log("node removed")
         this.node.remove()
     }
     

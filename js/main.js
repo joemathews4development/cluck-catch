@@ -44,6 +44,7 @@ const keys = {
 let appObj = null
 let chickenObj = null
 let eagleObject = null
+let bulletObject = null
 let fallingObjectsArray = []
 let gameIntervalId = null
 let fallingObjectsSpawnIntervalId = null
@@ -96,6 +97,7 @@ function startGame() {
     chickenObj = new Chicken()
     const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
     eagleObject = new Eagle(eaglePositionY)
+    bulletObject = new Bullet()
     appObj.changeState(GameState.game)
     setupLivesContainer()
 
@@ -124,6 +126,10 @@ function gameLoop() {
     fallingObjectsDespawnCheck()
     chickenObj.move()
     eagleObject.automaticMove()
+    if (bulletObject.shouldUpdatePosition) {
+        bulletObject.update(eagleObject)
+        checkBulletHittingEagle()
+    }
     checkObjectCollisionWithFallingObjects()
 
 }
@@ -150,7 +156,15 @@ function fallingObjectsDespawnCheck() {
 
 }
 
+function checkBulletHittingEagle() {
+    if (checkObjectCollidingFallingObject(eagleObject, bulletObject)) {
+        eagleObject.resetEaglePosition()
+        bulletObject.moveOutOfScreen()
+    }
+}
+
 function checkObjectCollisionWithFallingObjects() {
+
     fallingObjectsArray.forEach((fallingObj, index) => {
         let isCaughtByHen = checkObjectCollidingFallingObject(chickenObj, fallingObj)
         if (isCaughtByHen) {
@@ -212,6 +226,10 @@ function updateLivesAndCheckGameOver() {
     chickenObj.updateLivesAndCheckGameOver()
 }
 
+function shoot() {
+    bulletObject.startFollowingEagle((chickenObj.x + chickenObj.width / 2), (chickenObj.y + chickenObj.height / 2))
+}
+
 function gameOver() {
 
     destroyCharacterNodes()
@@ -227,6 +245,8 @@ function gameOver() {
 
 function destroyCharacterNodes() {
     chickenObj.destroyNode()
+    eagleObject.destroyNode()
+    bulletObject.destroyNode()
     fallingObjectsArray.forEach((fallingObject) => {
         fallingObject.destroyNode()
     })
@@ -241,12 +261,22 @@ document.addEventListener("DOMContentLoaded", () => {
   appObj = new App();
 });
 
-document.addEventListener('keydown', e => {
-  if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
+document.addEventListener('keydown', (event) => {
+  if (keys.hasOwnProperty(event.key)) {
+    keys[event.key] = true
+  }
 })
 
-document.addEventListener('keyup', e => {
-  if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
+document.addEventListener('keyup', (event) => {
+  if (keys.hasOwnProperty(event.key)) {
+    keys[event.key] = false
+  }
+})
+
+document.addEventListener('keydown', (event) => {
+   if (event.code === 'Space') {
+    shoot()
+  }
 })
 
 playButton.addEventListener('click', () => {
