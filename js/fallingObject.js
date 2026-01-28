@@ -15,8 +15,6 @@ class FallingObject {
         this.y = 0
         this.width = 50
         this.height = 60
-        this.imagePaddingX = this.width / 3
-        this.imagePaddingY = this.height / 3
 
         this.node.style.position = "absolute"
         this.node.style.top = `${this.y}px`

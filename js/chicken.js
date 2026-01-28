@@ -14,8 +14,6 @@ class Chicken {
         this.y = 600
         this.width = 130
         this.height = 130
-        this.imagePaddingX = this.width / 5
-        this.imagePaddingY = this.height / 3.75
 
         this.node.style.position = "absolute"
         this.node.style.top = `${this.y}px`
@@ -68,10 +66,12 @@ class Chicken {
         this.boostPowerActivated = true
         this.node.classList.add("shine")
         this.moveSpeed *= 4
+        fullBgm.playbackRate = 1.3
         setTimeout(() => {
             this.boostPowerActivated = false
             this.node.classList.remove("shine")
             this.moveSpeed /= 4
+            fullBgm.playbackRate = 1.0
         }, 8000);
     }
 
@@ -80,11 +80,18 @@ class Chicken {
         this.#updateScore()
     }
 
+    updateLivesAndCheckGameOver() {
+        this.updateLives()
+        if (this.isGameOver()) {
+            gameOver()
+        }
+    }
+
     #updateScore() {
         scoreLabelNode.innerText = `Score: ${this.score}`
     }
 
-    hittedPredetor() {
+    updateLives() {
         if (this.lives > 0 && !this.boostPowerActivated) {
             this.lives -= 1
             this.lifeNodes.pop().remove()
@@ -92,7 +99,6 @@ class Chicken {
     }
 
     isGameOver() {
-        console.log(this.lives)
         return this.lives === 0
     }
 

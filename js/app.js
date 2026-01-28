@@ -3,9 +3,10 @@ class App {
     constructor() {
         this.state = GameState.start
         this.name = ""
-        this.hasSound = true
+        this.hasSound = false
         this.changeState(GameState.start)
         this.#setupHighScores()
+        this.#setSoundAndImage()
     }
 
     #setupHighScores() {
@@ -15,7 +16,6 @@ class App {
         highScoreHeader.innerText = "High Scores"
         highScoresNode.append(highScoreHeader)
         const highScores = getScores()
-        console.log(highScores.length)
         if (highScores.length === 0) {
             const noHighScoreNode = document.createElement("p")
             noHighScoreNode.classList.add("text-content")
@@ -44,6 +44,10 @@ class App {
 
     toggleSound() {
         this.hasSound = !this.hasSound
+        this.#setSoundAndImage()
+    }
+
+    #setSoundAndImage() {
         playButton.src = this.#getSoundImage()
         startScreenMusicButton.src = this.#getSoundImage()
         this.#changeMusic()

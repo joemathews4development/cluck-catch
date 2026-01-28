@@ -37,12 +37,14 @@ const GameState = {
 }
 let appObj = null
 let chickenObj = null
+let eagleObject = null
 let fallingObjectsArray = []
 let gameIntervalId = null
 let fallingObjectsSpawnIntervalId = null
+let eagleObjectSpawnIntervalId = null
 const fallingObjectsImagesArray = [
-    "raccoon", "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "chick", "raccoon",
-     "fox", "puppy", "chick", "kitten", "puppy2", "kitten2", "booster"
+    "raccoon", "fox", "puppy", "chick", "booster", "kitten", "puppy2", "kitten2", "chick", "raccoon",
+     "fox", "puppy", "chick", "kitten", "puppy2", "kitten2"
 ]
 
 const fullBgm = new Audio("audio/fullbgm.wav")
@@ -95,6 +97,9 @@ function startGame() {
     // start all other intervals that might be needed.
     fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, 1500);
 
+    //
+    eagleObjectSpawnIntervalId = setInterval(eagleSpawn, 5000)
+
 }
 
 function setupLivesContainer() {
@@ -112,7 +117,11 @@ function gameLoop() {
         fallingObj.automaticFalling()
     })
     fallingObjectsDespawnCheck()
-    collisionChickenFallingObjects()
+    if (eagleObject !== null) {
+        eagleObject.automaticMove()
+        eagleDespawnCheck()
+    }
+    checkObjectCollisionWithFallingObjects()
 
 }
 
@@ -120,7 +129,7 @@ function fallingObjectsSpawn() {
 
     const randomfallingObjectLeftTopPositionX = Math.min(Math.floor(Math.random() * gameBoxNode.offsetWidth), gameBoxNode.offsetWidth - 100)
     const fallingObjectImage = fallingObjectsImagesArray[Math.floor(Math.random() * fallingObjectsImagesArray.length)]
-    const gravity = appObj.score > 10 ? appObj.score > 20 ? appObj.score > 30 ? 5.5 : 4.8 : 3.2 : 1.8
+    const gravity = chickenObj.score > 10 ? chickenObj.score > 20 ? chickenObj.score > 30 ? 14.0 : 10.5 : 7.0 : 3.5
     let fallingObj = new FallingObject(randomfallingObjectLeftTopPositionX, fallingObjectImage, gravity)
     fallingObjectsArray.push(fallingObj)
 
@@ -138,37 +147,62 @@ function fallingObjectsDespawnCheck() {
 
 }
 
-function collisionChickenFallingObjects() {
+function eagleSpawn() {
+    const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
+    eagleObject = new Eagle(eaglePositionY)
+}
+
+function eagleDespawnCheck() {
+    if ((eagleObject.y + eagleObject.height) >= gameBoxNode.offsetHeight || (eagleObject.x + eagleObject.width) >= gameBoxNode.offsetWidth) {
+        eagleObject.destroyNode()
+        eagleObject = null
+    }
+}
+
+function checkObjectCollisionWithFallingObjects() {
     fallingObjectsArray.forEach((fallingObj, index) => {
-        let isCaught = checkChickenCatchingFallingObject(chickenObj, fallingObj)
-        if (isCaught) {
-            updateWhenChickenFallingObjectCollides(index, fallingObj)
+        let isCaughtByHen = checkObjectCollidingFallingObject(chickenObj, fallingObj)
+        if (isCaughtByHen) {
+            updateWhenChickenFallingObjectCollides(index, fallingObj, isCaughtByHen)
+        }
+        if (eagleObject !== null) {
+            let isCollidingEagle = checkObjectCollidingFallingObject(eagleObject, fallingObj)
+            if (isCollidingEagle) {
+                updateWhenChickenFallingObjectCollides(index, fallingObj, false)
+            }
         }
     })
 
 }
 
-function checkChickenCatchingFallingObject(chicken, fallingObject) {
+
+
+function checkObjectCollidingFallingObject(object, fallingObject) {
     return (
-        fallingObject.x < chicken.x + chicken.width &&
-        fallingObject.x + fallingObject.width > chicken.x &&
-        fallingObject.y < chicken.y + chicken.height &&
-        fallingObject.y + fallingObject.height > chicken.y
+        fallingObject.x < object.x + object.width &&
+        fallingObject.x + fallingObject.width > object.x &&
+        fallingObject.y < object.y + object.height &&
+        fallingObject.y + fallingObject.height > object.y
     )
 
 }
 
-function updateWhenChickenFallingObjectCollides(index, fallingObject) {
+function updateWhenChickenFallingObjectCollides(index, fallingObject, isCaughtByHen) {
     removeFallingObject(index)
     if (fallingObject.isChick()) {
-        incrementScore()
-    } else if (fallingObject.isBooster()) {
+        if (isCaughtByHen) {
+            incrementScore()
+        } else {
+        // chickenObj.updateLivesAndCheckGameOver()
+        updateLivesAndCheckGameOver()
+        }
+    } else if (fallingObject.isBooster() && isCaughtByHen) {
         chickenObj.boost()
     } else {
-        chickenObj.hittedPredetor()
-        if (chickenObj.isGameOver()) {
-            gameOver()
-        }
+        if (isCaughtByHen) {
+            // chickenObj.updateLivesAndCheckGameOver()
+            updateLivesAndCheckGameOver()
+        } 
     }
 }
 
@@ -181,6 +215,10 @@ function removeFallingObject(index) {
 
 function incrementScore() {
     chickenObj.incrementScore()
+}
+
+function updateLivesAndCheckGameOver() {
+    chickenObj.updateLivesAndCheckGameOver()
 }
 
 function gameOver() {
