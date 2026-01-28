@@ -24,8 +24,8 @@ class Bullet {
     update(eagleObject) {
 
         // Direction vector (target - bullet)
-        const dx = (eagleObject.x > 0 ? eagleObject.x : gameBoxNode.offsetWidth) - this.x
-        const dy = (eagleObject.x > 0 ? eagleObject.y : gameBoxNode.offsetHeight / 2) - this.y
+        const dx = (eagleObject.isVisible() ? eagleObject.x : gameBoxNode.offsetWidth) - this.x
+        const dy = (eagleObject.isVisible() > 0 ? eagleObject.y : gameBoxNode.offsetHeight / 2) - this.y
         /*const dx = eagleObject.x - this.x
         const dy = eagleObject.y - this.x*/
 

@@ -170,7 +170,7 @@ function checkObjectCollisionWithFallingObjects() {
         if (isCaughtByHen) {
             updateWhenChickenFallingObjectCollides(index, fallingObj, isCaughtByHen)
         }
-        if (eagleObject !== null) {
+        if (eagleObject.isVisible()) {
             let isCollidingEagle = checkObjectCollidingFallingObject(eagleObject, fallingObj)
             if (isCollidingEagle) {
                 updateWhenChickenFallingObjectCollides(index, fallingObj, false)
@@ -227,7 +227,9 @@ function updateLivesAndCheckGameOver() {
 }
 
 function shoot() {
-    bulletObject.startFollowingEagle((chickenObj.x + chickenObj.width / 2), (chickenObj.y + chickenObj.height / 2))
+    if (eagleObject.isVisible()) {
+        bulletObject.startFollowingEagle((chickenObj.x + chickenObj.width / 2), (chickenObj.y + chickenObj.height / 2))
+    }
 }
 
 function gameOver() {

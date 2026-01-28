@@ -50,6 +50,10 @@ class Eagle {
         }
     }
 
+    isVisible() {
+        return this.x - this.width > 0
+    }
+
     resetEaglePosition() {
         this.x = Eagle.startingX
         const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
