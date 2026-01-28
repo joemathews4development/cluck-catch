@@ -35,6 +35,12 @@ const GameState = {
   game: "game",
   over: "game_over"
 }
+const keys = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false
+}
 let appObj = null
 let chickenObj = null
 let eagleObject = null
@@ -88,6 +94,8 @@ function bounceInput() {
 function startGame() {
 
     chickenObj = new Chicken()
+    const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
+    eagleObject = new Eagle(eaglePositionY)
     appObj.changeState(GameState.game)
     setupLivesContainer()
 
@@ -96,9 +104,6 @@ function startGame() {
 
     // start all other intervals that might be needed.
     fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, 1500);
-
-    //
-    eagleObjectSpawnIntervalId = setInterval(eagleSpawn, 5000)
 
 }
 
@@ -117,10 +122,8 @@ function gameLoop() {
         fallingObj.automaticFalling()
     })
     fallingObjectsDespawnCheck()
-    if (eagleObject !== null) {
-        eagleObject.automaticMove()
-        eagleDespawnCheck()
-    }
+    chickenObj.move()
+    eagleObject.automaticMove()
     checkObjectCollisionWithFallingObjects()
 
 }
@@ -145,18 +148,6 @@ function fallingObjectsDespawnCheck() {
         fallingObjectsArray.shift()
     }
 
-}
-
-function eagleSpawn() {
-    const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
-    eagleObject = new Eagle(eaglePositionY)
-}
-
-function eagleDespawnCheck() {
-    if ((eagleObject.y + eagleObject.height) >= gameBoxNode.offsetHeight || (eagleObject.x + eagleObject.width) >= gameBoxNode.offsetWidth) {
-        eagleObject.destroyNode()
-        eagleObject = null
-    }
 }
 
 function checkObjectCollisionWithFallingObjects() {
@@ -193,15 +184,15 @@ function updateWhenChickenFallingObjectCollides(index, fallingObject, isCaughtBy
         if (isCaughtByHen) {
             incrementScore()
         } else {
-        // chickenObj.updateLivesAndCheckGameOver()
-        updateLivesAndCheckGameOver()
+        chickenObj.updateLivesAndCheckGameOver()
+        // updateLivesAndCheckGameOver()
         }
     } else if (fallingObject.isBooster() && isCaughtByHen) {
         chickenObj.boost()
     } else {
         if (isCaughtByHen) {
-            // chickenObj.updateLivesAndCheckGameOver()
-            updateLivesAndCheckGameOver()
+            chickenObj.updateLivesAndCheckGameOver()
+            // updateLivesAndCheckGameOver()
         } 
     }
 }
@@ -249,16 +240,13 @@ startNewBtnNode.addEventListener("click", startNew)
 document.addEventListener("DOMContentLoaded", () => {
   appObj = new App();
 });
-document.addEventListener("keydown", (event) => {
-    if (event.code === "ArrowUp") {
-        chickenObj.move("up")
-    } else if (event.code === "ArrowRight") {
-        chickenObj.move("right")
-    } else if (event.code === "ArrowDown") {
-        chickenObj.move("down")
-    } else if (event.code === "ArrowLeft") {
-        chickenObj.move("left")
-    }
+
+document.addEventListener('keydown', e => {
+  if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
+})
+
+document.addEventListener('keyup', e => {
+  if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 })
 
 playButton.addEventListener('click', () => {

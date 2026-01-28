@@ -11,7 +11,7 @@ class Chicken {
         gameBoxNode.append(this.node)
 
         this.x = 250
-        this.y = 600
+        this.y = 0
         this.width = 130
         this.height = 130
 
@@ -21,7 +21,7 @@ class Chicken {
         this.node.style.width = `${this.width}px`
         this.node.style.height = `${this.height}px`
 
-        this.moveSpeed = 30
+        this.moveSpeed = 5
         this.score = 0
         this.lives = 5
         this.lifeNodes = []
@@ -30,7 +30,7 @@ class Chicken {
     }
 
 
-    move(direction) {
+    /*move(direction) {
         if (direction === "up") {
             if (this.y - this.moveSpeed > 0) {
                 this.y -= this.moveSpeed
@@ -60,6 +60,33 @@ class Chicken {
             }
             this.node.style.left = `${this.x}px`
         }
+    }*/
+
+    move() {
+        let dx = 0;
+        let dy = 0;
+
+        if (keys.ArrowUp) dy -= 1;
+        if (keys.ArrowDown) dy += 1;
+        if (keys.ArrowLeft) dx -= 1;
+        if (keys.ArrowRight) dx += 1;
+
+        // No movement
+        if (dx === 0 && dy === 0) return;
+
+        // Normalize diagonal movement
+        const length = Math.sqrt(dx * dx + dy * dy);
+        dx /= length;
+        dy /= length;
+
+        //const speed = 30;
+        
+        const newX = this.x + dx * this.moveSpeed
+        const newY = this.y + dy * this.moveSpeed
+        this.x = Math.max(0, Math.min(gameBoxNode.offsetWidth - this.width, newX))
+        this.y = Math.max(0, Math.min(gameBoxNode.offsetHeight - this.height, newY))
+        this.node.style.left = `${this.x}px`
+        this.node.style.top = `${this.y}px`
     }
 
     boost() {
