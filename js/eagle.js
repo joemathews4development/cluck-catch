@@ -24,12 +24,8 @@ class Eagle {
     }
 
     automaticMove() {
-        if (chickenObj.isCaughtByEagle) {
-                console.log("Caught")
-            }
         if (this.x > gameBoxNode.offsetWidth) {
             if (chickenObj.isCaughtByEagle) {
-                console.log("Game over")
                 gameOver()
             }
             this.resetEaglePosition()
@@ -73,7 +69,9 @@ class Eagle {
         this.y = eaglePositionY
         this.node.style.left = `${this.x}px`
         this.node.style.top = `${this.y}px`
-        this.playedMusic = true
+        this.playedMusic = false
+        eagleBgm.pause()
+        eagleBgm.currentTime = 0
     }
 
     destroyNode() {

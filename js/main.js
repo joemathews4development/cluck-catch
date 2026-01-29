@@ -145,10 +145,13 @@ function gameLoop() {
     }
     if (eagleObject.isVisible()) {
         if (!eagleObject.playedMusic) {
+            console.log("Playing eagle music")
             eagleBgm.play()
             eagleObject.playedMusic = true
         }
-        checkEagleCollisionWithHen()
+        if (!chickenObj.boostPowerActivated) {
+            checkEagleCollisionWithHen()
+        }
     }
     checkObjectCollisionWithFallingObjects()
 

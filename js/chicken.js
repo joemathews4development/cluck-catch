@@ -82,8 +82,8 @@ class Chicken {
         this.lives = 0
         this.lifeNodes.forEach((node) => node.remove())
         this.destroyNode()
-        henBgm.playbackRate = 1.4
-        henBgm.volume = 0.4
+        henBgm.playbackRate = 1.7
+        henBgm.volume = 0.7
     }
 
     updateLivesAndCheckGameOver() {
@@ -112,7 +112,6 @@ class Chicken {
     }
 
     destroyNode() {
-        console.log("node removed")
         this.node.remove()
     }
     

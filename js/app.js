@@ -4,7 +4,7 @@ class App {
         this.state = GameState.start
         this.name = ""
         this.hasSound = false
-        this.difficulty = new Difficulty(3)
+        this.difficulty = new Difficulty(1)
         this.changeState(GameState.start)
         this.#setSoundAndImage()
     }
