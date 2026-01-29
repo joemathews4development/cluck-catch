@@ -4,8 +4,8 @@ class App {
         this.state = GameState.start
         this.name = ""
         this.hasSound = false
+        this.difficulty = new Difficulty(3)
         this.changeState(GameState.start)
-        this.#setupHighScores()
         this.#setSoundAndImage()
     }
 
@@ -36,6 +36,10 @@ class App {
         nameNode.value = this.name
     }
 
+    changeDifficultyLevel(newLevel) {
+        this.difficulty.level = newLevel
+    }
+
     changeState(newState) {
         this.state = newState
         this.#changeScreen()
@@ -58,7 +62,8 @@ class App {
             startScreenNode.style.display = "flex"
             gameScreenNode.style.display = "none"
             gameOverScreenNode.style.display = "none"
-            playButton.src = this.#getSoundImage()  
+            playButton.src = this.#getSoundImage()
+            this.#setupHighScores()  
         } else if (this.state === GameState.game) {
             startScreenNode.style.display = "none"
             gameScreenNode.style.display = "flex"

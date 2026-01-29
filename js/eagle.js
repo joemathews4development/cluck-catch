@@ -23,12 +23,6 @@ class Eagle {
     }
 
     automaticMove() {
-        /*if (this.x + this.width < 10) {
-            this.x += this.movementSpeed
-            const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
-            this.y = eaglePositionY
-            this.node.style.left = `${this.x}px`
-        }*/
         if (this.x > gameBoxNode.offsetWidth) {
             this.resetEaglePosition()
         } else {

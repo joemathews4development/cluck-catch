@@ -1,12 +1,12 @@
 class Chicken {
 
     /**
-     * ! Always create new after calling the destroy method on the existing object.
+     * ! Create new only after calling the destroy method on the existing object.
      */
     constructor() {
 
         this.node = document.createElement("img")
-        this.node.src = "./images/chicken.png"
+        this.node.src = appObj.difficulty.getImageName()
         
         gameBoxNode.append(this.node)
 
@@ -57,16 +57,18 @@ class Chicken {
     }
 
     boost() {
-        this.boostPowerActivated = true
-        this.node.classList.add("shine")
-        this.moveSpeed *= 4
-        fullBgm.playbackRate = 1.3
-        setTimeout(() => {
-            this.boostPowerActivated = false
-            this.node.classList.remove("shine")
-            this.moveSpeed /= 4
-            fullBgm.playbackRate = 1.0
-        }, 8000);
+        if (!this.boostPowerActivated) {
+            this.boostPowerActivated = true
+            this.node.classList.add("shine")
+            this.moveSpeed *= 4
+            fullBgm.playbackRate = 1.3
+            setTimeout(() => {
+                this.boostPowerActivated = false
+                this.node.classList.remove("shine")
+                this.moveSpeed /= 4
+                fullBgm.playbackRate = 1.0
+            }, 8000);
+        }
     }
 
     incrementScore() {

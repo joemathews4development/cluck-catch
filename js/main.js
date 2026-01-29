@@ -5,6 +5,12 @@ const startScreenNode = document.querySelector("#start-screen")
 const gameScreenNode = document.querySelector("#game-screen")
 const gameOverScreenNode = document.querySelector("#game-over-screen")
 
+// difficulty / character nodes.
+const easyNode = document.querySelector("#easy")
+const mediumNode = document.querySelector("#medium")
+const hardNode = document.querySelector("#hard")
+
+// high scores node
 const highScoresNode = document.querySelector("#high-scores")
 
 // life
@@ -24,6 +30,7 @@ const finalScoreLabelNode = document.querySelector("#final-score")
 
 // audio buttons
 const playButton = document.querySelector("#music");
+console.log(playButton)
 const startScreenMusicButton = document.querySelector("#start-screen-music");
 
 // game box
@@ -67,7 +74,7 @@ const gameOverBgm = new Audio("audio/gameOver.wav")
 //* GLOBAL GAME FUNCTIONS
 
 function startNew() {
-    appObj = new App()
+    appObj.changeState(GameState.start)
 }
 
 function validateAndStartGame() {
@@ -105,7 +112,7 @@ function startGame() {
     gameIntervalId = setInterval(gameLoop, Math.round(1000 / 60)) // 60fps
 
     // start all other intervals that might be needed.
-    fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, 1500);
+    fallingObjectsSpawnIntervalId = setInterval(fallingObjectsSpawn, appObj.difficulty.getFallingObjectsSpawnInterval());
 
 }
 
@@ -138,7 +145,7 @@ function fallingObjectsSpawn() {
 
     const randomfallingObjectLeftTopPositionX = Math.min(Math.floor(Math.random() * gameBoxNode.offsetWidth), gameBoxNode.offsetWidth - 100)
     const fallingObjectImage = fallingObjectsImagesArray[Math.floor(Math.random() * fallingObjectsImagesArray.length)]
-    const gravity = chickenObj.score > 10 ? chickenObj.score > 20 ? chickenObj.score > 30 ? 14.0 : 10.5 : 7.0 : 3.5
+    const gravity = appObj.difficulty.getFallingObjectGravity(chickenObj.score)
     let fallingObj = new FallingObject(randomfallingObjectLeftTopPositionX, fallingObjectImage, gravity)
     fallingObjectsArray.push(fallingObj)
 
@@ -259,6 +266,24 @@ function destroyCharacterNodes() {
 startBtnNode.addEventListener("click", validateAndStartGame)
 restartBtnNode.addEventListener("click", startGame)
 startNewBtnNode.addEventListener("click", startNew)
+easyNode.addEventListener("click", () => {
+    appObj.changeDifficultyLevel(1)
+    easyNode.classList.add("selected")
+    mediumNode.classList.remove("selected")
+    hardNode.classList.remove("selected")
+})
+mediumNode.addEventListener("click", () => {
+    appObj.changeDifficultyLevel(2)
+    easyNode.classList.remove("selected")
+    mediumNode.classList.add("selected")
+    hardNode.classList.remove("selected")
+})
+hardNode.addEventListener("click", () => {
+    appObj.changeDifficultyLevel(3)
+    easyNode.classList.remove("selected")
+    mediumNode.classList.remove("selected")
+    hardNode.classList.add("selected")
+})
 document.addEventListener("DOMContentLoaded", () => {
   appObj = new App();
 });
@@ -283,6 +308,7 @@ document.addEventListener('keydown', (event) => {
 
 playButton.addEventListener('click', () => {
     appObj.toggleSound()
+    console.log("Button clicked")
 })
 
 startScreenMusicButton.addEventListener('click', () => {
