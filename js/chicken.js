@@ -25,6 +25,7 @@ class Chicken {
         this.score = 0
         this.lives = 5
         this.lifeNodes = []
+        this.isCaughtByEagle = false
         this.boostPowerActivated = false
         this.#updateScore()
     }
@@ -76,7 +77,17 @@ class Chicken {
         this.#updateScore()
     }
 
+    caughtByEagle() {
+        this.isCaughtByEagle = true
+        this.lives = 0
+        this.lifeNodes.forEach((node) => node.remove())
+        this.destroyNode()
+    }
+
     updateLivesAndCheckGameOver() {
+        if (this.isCaughtByEagle) {
+            return
+        }
         this.updateLives()
         if (this.isGameOver()) {
             gameOver()

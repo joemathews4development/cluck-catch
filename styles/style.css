@@ -46,6 +46,18 @@ html, body {
   margin: 0 auto;
 }
 
+/* #high-scores-container {
+  background-image: url("../images/leaderboard.png");
+  background-size: auto;
+  width: 250;
+  height: 800;
+} */
+
+#instructions-image {
+  width: 25vw;
+  height: 75vh;
+}
+
 #high-scores {
   list-style-type: none;
 }

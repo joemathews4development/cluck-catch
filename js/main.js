@@ -137,6 +137,9 @@ function gameLoop() {
         bulletObject.update(eagleObject)
         checkBulletHittingEagle()
     }
+    if (eagleObject.isVisible) {
+        checkEagleCollisionWithHen()
+    }
     checkObjectCollisionWithFallingObjects()
 
 }
@@ -161,6 +164,13 @@ function fallingObjectsDespawnCheck() {
         fallingObjectsArray.shift()
     }
 
+}
+
+function checkEagleCollisionWithHen() {
+    if (checkObjectCollidingFallingObject(eagleObject, chickenObj)) {
+        chickenObj.caughtByEagle()
+        eagleObject.updateWhenHenIsCaught()
+    }
 }
 
 function checkBulletHittingEagle() {

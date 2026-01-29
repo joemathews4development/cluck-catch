@@ -23,13 +23,25 @@ class Eagle {
     }
 
     automaticMove() {
+        if (chickenObj.isCaughtByEagle) {
+                console.log("Caught")
+            }
         if (this.x > gameBoxNode.offsetWidth) {
+            if (chickenObj.isCaughtByEagle) {
+                console.log("Game over")
+                gameOver()
+            }
             this.resetEaglePosition()
         } else {
             const chick = fallingObjectsArray.find( (fallingObject) => fallingObject.isChick() )
 
             let newX = chick?.x || gameBoxNode.offsetWidth
             let newY = chick?.y || 0
+            if (chickenObj.isCaughtByEagle) {
+                newX = gameBoxNode.offsetWidth
+                newY = 0
+            }
+            
             let newGravity = chick?.gravity || 1.8
 
             const distanceX = newX - this.x
@@ -46,6 +58,16 @@ class Eagle {
 
     isVisible() {
         return this.x - this.width > 0
+    }
+
+    updateWhenHenIsCaught() {
+        this.node.src = appObj.difficulty.getEagleImageWhenHenIsCaught()
+        this.movementSpeed = 5
+        /*this.width = 180
+        this.height = 180
+        this.node.style.width = `${this.width}px`
+        this.node.style.height = `${this.height}px`*/
+        this.node.style.transform = "scale(1.2)"
     }
 
     resetEaglePosition() {

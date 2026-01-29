@@ -43,6 +43,12 @@
         3: "./images/hard_hen.png"
     }
 
+    static levelEagleImageWhenHenIsCaught = {
+        1: "./images/eagle_easy_hen.png",
+        2: "./images/eagle_medium_hen.png",
+        3: "./images/eagle_hard_hen.png"
+    }
+
     /**
      * Returns the gravity of the falling object based on the given score and choosen difficulty level.
      * 
@@ -64,6 +70,10 @@
 
     getImageName() {
         return Difficulty.levelHenImage[this.level] ?? "easy_hen"
+    }
+
+    getEagleImageWhenHenIsCaught() {
+        return Difficulty.levelEagleImageWhenHenIsCaught[this.level] ?? "./images/eagle_easy_hen.png"
     }
 
 }
