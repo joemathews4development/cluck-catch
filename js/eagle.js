@@ -11,7 +11,6 @@ class Eagle {
         this.y = posY
         this.width = 130
         this.height = 130
-        this.visible = false
 
         this.node.style.position = "absolute"
         this.node.style.top = `${this.y}px`
@@ -24,11 +23,12 @@ class Eagle {
     }
 
     automaticMove() {
-        if (this.x + this.width < 10) {
+        /*if (this.x + this.width < 10) {
             this.x += this.movementSpeed
+            const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
+            this.y = eaglePositionY
             this.node.style.left = `${this.x}px`
-            this.visible = true
-        }
+        }*/
         if (this.x > gameBoxNode.offsetWidth) {
             this.resetEaglePosition()
         } else {
@@ -59,8 +59,7 @@ class Eagle {
         const eaglePositionY = Math.min(Math.floor(Math.random() * gameBoxNode.offsetHeight), gameBoxNode.offsetHeight - 130)
         this.y = eaglePositionY
         this.node.style.left = `${this.x}px`
-        this.node.style.left = `${this.x}px`
-        this.visible = false
+        this.node.style.top = `${this.y}px`
     }
 
     destroyNode() {
