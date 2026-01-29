@@ -26,7 +26,7 @@ function addPlayerScore(name, score) {
 }
 
 function getFinalScoreMessage(name, score) {
-    const messageEnd = score === 0 ? `${score} chick` : `${score} chicks`
+    const messageEnd = score === 1 ? `${score} chick` : `${score} chicks`
     const newHighScoreMessage = `Congratulations ${name}, you just created a new high score catching ${messageEnd} !!!!`
     const equalledHighScoreMessage = `Congratulations ${name}, you just equalled the high score by catching ${messageEnd} !!!`
     const gameOverScoreMessage = `Hi ${name}, you caught ${messageEnd}.`
