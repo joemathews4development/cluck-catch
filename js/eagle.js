@@ -11,6 +11,7 @@ class Eagle {
         this.y = posY
         this.width = 130
         this.height = 130
+        this.playedMusic = false
 
         this.node.style.position = "absolute"
         this.node.style.top = `${this.y}px`
@@ -63,10 +64,6 @@ class Eagle {
     updateWhenHenIsCaught() {
         this.node.src = appObj.difficulty.getEagleImageWhenHenIsCaught()
         this.movementSpeed = 5
-        /*this.width = 180
-        this.height = 180
-        this.node.style.width = `${this.width}px`
-        this.node.style.height = `${this.height}px`*/
         this.node.style.transform = "scale(1.2)"
     }
 
@@ -76,6 +73,7 @@ class Eagle {
         this.y = eaglePositionY
         this.node.style.left = `${this.x}px`
         this.node.style.top = `${this.y}px`
+        this.playedMusic = true
     }
 
     destroyNode() {

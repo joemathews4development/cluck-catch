@@ -62,12 +62,12 @@ class Chicken {
             this.boostPowerActivated = true
             this.node.classList.add("shine")
             this.moveSpeed *= 4
-            fullBgm.playbackRate = 1.3
+            henBgm.playbackRate = 1.3
             setTimeout(() => {
                 this.boostPowerActivated = false
                 this.node.classList.remove("shine")
                 this.moveSpeed /= 4
-                fullBgm.playbackRate = 1.0
+                henBgm.playbackRate = 1.0
             }, 8000);
         }
     }
@@ -82,6 +82,8 @@ class Chicken {
         this.lives = 0
         this.lifeNodes.forEach((node) => node.remove())
         this.destroyNode()
+        henBgm.playbackRate = 1.4
+        henBgm.volume = 0.4
     }
 
     updateLivesAndCheckGameOver() {

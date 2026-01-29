@@ -61,13 +61,19 @@ const fallingObjectsImagesArray = [
      "fox", "puppy", "chick", "kitten", "puppy2", "kitten2"
 ]
 
-const fullBgm = new Audio("audio/fullbgm.wav")
-fullBgm.loop = true
+const henBgm = new Audio("audio/chicken_cluck_soft.wav")
+henBgm.volume = 0.1
+henBgm.loop = true
+
+const eagleBgm = new Audio("audio/eagle.mp3")
+eagleBgm.volume = 0.2
 
 const introBgm = new Audio("audio/introbgm.wav")
+introBgm.volume = 0.1
 introBgm.loop = true
 
 const gameOverBgm = new Audio("audio/gameOver.wav")
+gameOverBgm.volume = 0.1
 
 
 
@@ -137,7 +143,11 @@ function gameLoop() {
         bulletObject.update(eagleObject)
         checkBulletHittingEagle()
     }
-    if (eagleObject.isVisible) {
+    if (eagleObject.isVisible()) {
+        if (!eagleObject.playedMusic) {
+            eagleBgm.play()
+            eagleObject.playedMusic = true
+        }
         checkEagleCollisionWithHen()
     }
     checkObjectCollisionWithFallingObjects()
@@ -318,7 +328,6 @@ document.addEventListener('keydown', (event) => {
 
 playButton.addEventListener('click', () => {
     appObj.toggleSound()
-    console.log("Button clicked")
 })
 
 startScreenMusicButton.addEventListener('click', () => {

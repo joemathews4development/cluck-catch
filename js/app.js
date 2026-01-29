@@ -79,12 +79,12 @@ class App {
         if (this.hasSound) {
             if (this.state === GameState.start) {
                 introBgm.play()
-                fullBgm.pause()
-                fullBgm.currentTime = 0
+                henBgm.pause()
+                henBgm.currentTime = 0
                 gameOverBgm.pause()
                 gameOverBgm.currentTime = 0
             } else if (this.state === GameState.game) {
-                fullBgm.play()
+                henBgm.play()
                 introBgm.pause()
                 introBgm.currentTime = 0
                 gameOverBgm.pause()
@@ -93,14 +93,14 @@ class App {
                 gameOverBgm.play()
                 introBgm.pause()
                 introBgm.currentTime = 0
-                fullBgm.pause()
-                fullBgm.currentTime = 0
+                henBgm.pause()
+                henBgm.currentTime = 0
             }
         } else {
             introBgm.pause()
             introBgm.currentTime = 0
-            fullBgm.pause()
-            fullBgm.currentTime = 0
+            henBgm.pause()
+            henBgm.currentTime = 0
             gameOverBgm.pause()
             gameOverBgm.currentTime = 0
         }
