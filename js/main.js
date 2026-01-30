@@ -144,7 +144,7 @@ function gameLoop() {
         checkBulletHittingEagle()
     }
     if (eagleObject.isVisible()) {
-        if (!eagleObject.playedMusic) {
+        if (!eagleObject.playedMusic && appObj.hasSound) {
             console.log("Playing eagle music")
             eagleBgm.play()
             eagleObject.playedMusic = true

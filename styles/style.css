@@ -241,3 +241,24 @@ shine effect for power boost
   animation: shine 0.9s infinite ease-in-out;
   will-change: filter;
 }
+
+.leaderboard {
+  position: relative;
+}
+
+.board-bg {
+  width: 15vw;
+  height: 50vh;
+}
+
+.scores {
+  position: absolute;
+  top: 15vh;
+  left: 50%;
+  transform: translateX(-50%); 
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+  color: #5a3a1a;
+}
+
+

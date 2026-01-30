@@ -11,10 +11,10 @@ class App {
 
     #setupHighScores() {
         highScoresNode.innerHTML = ""
-        const highScoreHeader = document.createElement("p")
+        /*const highScoreHeader = document.createElement("p")
         highScoreHeader.classList.add("text-content")
         highScoreHeader.innerText = "High Scores"
-        highScoresNode.append(highScoreHeader)
+        highScoresNode.append(highScoreHeader)*/
         const highScores = getScores()
         if (highScores.length === 0) {
             const noHighScoreNode = document.createElement("p")
@@ -22,10 +22,10 @@ class App {
             noHighScoreNode.innerText = "There are no saved scores yet!"
             highScoresNode.append(noHighScoreNode)
         } else {
-            highScores.forEach((highScore) => {
-                const highScoreNode = document.createElement("li")
+            highScores.forEach((highScore, index) => {
+                const highScoreNode = document.createElement("p")
                 highScoreNode.classList.add("text-content")
-                highScoreNode.innerText = `${highScore.name}: ${highScore.score}`
+                highScoreNode.innerText = `${index + 1}. ${highScore.name}: ${highScore.score}`
                 highScoresNode.append(highScoreNode)
             })
         }
