@@ -141,7 +141,9 @@ function gameLoop() {
     eagleObject.automaticMove()
     if (bulletObject.shouldUpdatePosition) {
         bulletObject.update(eagleObject)
-        checkBulletHittingEagle()
+        if (!chickenObj.isCaughtByEagle) {
+            checkBulletHittingEagle()
+        }
     }
     if (eagleObject.isVisible()) {
         if (!eagleObject.playedMusic && appObj.hasSound) {
@@ -188,7 +190,9 @@ function checkEagleCollisionWithHen() {
 
 function checkBulletHittingEagle() {
     if (checkObjectCollidingFallingObject(eagleObject, bulletObject)) {
-        eagleObject.resetEaglePosition()
+        if (!chickenObj.isCaughtByEagle) {
+            eagleObject.resetEaglePosition()
+        }
         bulletObject.moveOutOfScreen()
     }
 }
@@ -257,7 +261,7 @@ function updateLivesAndCheckGameOver() {
 }
 
 function shoot() {
-    if (eagleObject.isVisible()) {
+    if (eagleObject.isVisible() && !chickenObj.isCaughtByEagle) {
         bulletObject.startFollowingEagle((chickenObj.x + chickenObj.width / 2), (chickenObj.y + chickenObj.height / 2))
     }
 }

@@ -74,6 +74,7 @@ class Bullet {
     }
 
     moveOutOfScreen() {
+        console.log("bullet moving out")
         this.x = -1000
         this.y = 0
         this.updatePosition()
